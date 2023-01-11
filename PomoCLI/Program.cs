@@ -20,6 +20,15 @@ string timer(int seconds)
     return string.Format("{0:D2}m:{1:D2}s", t.Minutes, t.Seconds);
 }
 
+
+//Convert totalSecondsWorked into hh:mm:ss
+string totalTime(int seconds)
+{
+    TimeSpan t = TimeSpan.FromSeconds(seconds);
+    return string.Format("{0:D2}h:{1:D2}m:{2:D2}s", t.Hours, t.Minutes, t.Seconds);
+}
+
+int totalSecondsWorked = 0;
 //Main pomodoro loop
 while (true)
 {
@@ -27,22 +36,39 @@ while (true)
     for (int i = 1500; i > 0; i--)
     {
         Console.Clear();
+
         printAsciiLogo();
+
+        //Display work timer
         Console.WriteLine("Time: " + "{0:HH:mm:ss}", DateTime.Now);
         Console.ForegroundColor = ConsoleColor.DarkRed;
         Console.WriteLine("Work for: " + timer(i));
-        Console.ForegroundColor = ConsoleColor.White;
+
+        //Increase and display total working time
+        totalSecondsWorked++;
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Total working time: " + totalTime(totalSecondsWorked));
+
+        //Wait 1 second
         Thread.Sleep(1000);
     }
     //5 minute break loop
     for (int j = 300; j > 0; j--)
     {
         Console.Clear();
+
         printAsciiLogo();
+
+        //Display rest timer
         Console.WriteLine("Time: " + "{0:HH:mm:ss}", DateTime.Now);
         Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Rest for: " + timer(j));
-        Console.ForegroundColor = ConsoleColor.White;
+
+        //Display total working time
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.WriteLine("Total working time: " + totalTime(totalSecondsWorked));
+
+        //Wait 1 second
         Thread.Sleep(1000);
     }
 
